@@ -23,7 +23,6 @@
       --text:      #f0ebe4;
       --muted:     rgba(240,235,228,0.50);
       --faint:     rgba(240,235,228,0.25);
-      --radius-phone: 44px;
     }
 
     /* ─── Base ───────────────────────────────────────── */
@@ -158,49 +157,6 @@
       letter-spacing: 0.04em;
     }
 
-    /* ─── Phone row ──────────────────────────────────── */
-    .phones {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      gap: 20px;
-      padding: 0 24px 100px;
-      flex-wrap: wrap;
-    }
-    .phone {
-      width: 220px;
-      flex-shrink: 0;
-      border-radius: var(--radius-phone);
-      overflow: hidden;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      box-shadow: 0 32px 80px rgba(0,0,0,0.70), 0 0 0 1px rgba(0,0,0,0.5);
-      background: #1a1020;
-      position: relative;
-    }
-    .phone.tall { transform: translateY(-24px); }
-    .phone img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    /* Placeholder for when no screenshot is provided */
-    .phone-placeholder {
-      width: 100%;
-      aspect-ratio: 9/19.5;
-      background: linear-gradient(160deg, #1e1530 0%, #0e0b18 60%, #1a1020 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: rgba(255,255,255,0.2);
-      font-size: 12px;
-      letter-spacing: 0.1em;
-    }
-    .phone-placeholder svg { opacity: 0.25; width: 28px; height: 28px; }
-
     /* ─── Divider ────────────────────────────────────── */
     .divider {
       position: relative;
@@ -326,9 +282,6 @@
     /* ─── Responsive ─────────────────────────────────── */
     @media (max-width: 600px) {
       nav { padding: 16px 20px; }
-      .phones { gap: 12px; }
-      .phone { width: 155px; border-radius: 32px; }
-      .phone.tall { transform: translateY(-16px); }
     }
   </style>
 </head>
@@ -356,19 +309,6 @@
     </a>
     <p class="hero-note">Free iOS beta · No account needed</p>
   </section>
-
-  <!-- Phone mockups -->
-  <div class="phones">
-    <div class="phone">
-      <img src="screenshots/screen1.jpg" alt="With Love — home screen with sunset sky" />
-    </div>
-    <div class="phone tall">
-      <img src="screenshots/screen2.jpg" alt="With Love — paint to reveal a photo" />
-    </div>
-    <div class="phone">
-      <img src="screenshots/screen3.jpg" alt="With Love — create art mode" />
-    </div>
-  </div>
 
   <div class="divider"></div>
 
