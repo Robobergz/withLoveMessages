@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>With Love — Say what you still need to say.</title>
+  <meta name="description" content="With Love is a quiet iPhone app for sending messages to the people you've lost. No record kept. No judgement. Just the act of saying it." />
+  <meta property="og:title" content="With Love" />
+  <meta property="og:description" content="Say what you still need to say." />
+  <meta property="og:type" content="website" />
+  <style>
+    /* ─── Reset ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    /* ─── Tokens ─────────────────────────────────────── */
+    :root {
+      --bg:        #08060f;
+      --surface:   #110e1c;
+      --border:    rgba(255,255,255,0.07);
+      --amber:     #e8956b;
+      --amber-dim: rgba(232,149,107,0.15);
+      --text:      #f0ebe4;
+      --muted:     rgba(240,235,228,0.50);
+      --faint:     rgba(240,235,228,0.25);
+      --radius-phone: 44px;
+    }
+
+    /* ─── Base ───────────────────────────────────────── */
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ─── Stars background ───────────────────────────── */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,0.55) 0%, transparent 100%),
+        radial-gradient(1px 1px at 34% 8%,  rgba(255,255,255,0.40) 0%, transparent 100%),
+        radial-gradient(1px 1px at 56% 22%, rgba(255,255,255,0.50) 0%, transparent 100%),
+        radial-gradient(1px 1px at 78% 5%,  rgba(255,255,255,0.35) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 30%, rgba(255,255,255,0.45) 0%, transparent 100%),
+        radial-gradient(1px 1px at 6%  42%, rgba(255,255,255,0.30) 0%, transparent 100%),
+        radial-gradient(1px 1px at 47% 55%, rgba(255,255,255,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 68% 48%, rgba(255,255,255,0.40) 0%, transparent 100%),
+        radial-gradient(1px 1px at 23% 70%, rgba(255,255,255,0.30) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 65%, rgba(255,255,255,0.35) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,0.20) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 90%, rgba(255,255,255,0.25) 0%, transparent 100%),
+        radial-gradient(1px 1px at 62% 88%, rgba(255,255,255,0.20) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Nav ────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 32px;
+      background: rgba(8,6,15,0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      text-decoration: none;
+      opacity: 0.9;
+    }
+    .btn-nav {
+      background: var(--amber);
+      color: #1a0f08;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 9px 20px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn-nav:hover { opacity: 0.85; }
+
+    /* ─── Hero ───────────────────────────────────────── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+    .hero-title {
+      font-size: clamp(42px, 8vw, 76px);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 22px;
+      background: linear-gradient(160deg, #f5f0ea 30%, var(--amber) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px);
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 40px;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--amber);
+      color: #1a0f08;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 16px 34px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 8px 32px rgba(232,149,107,0.30);
+    }
+    .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+    .btn-primary svg { width: 18px; height: 18px; }
+
+    .hero-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--faint);
+      letter-spacing: 0.04em;
+    }
+
+    /* ─── Phone row ──────────────────────────────────── */
+    .phones {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 20px;
+      padding: 0 24px 100px;
+      flex-wrap: wrap;
+    }
+    .phone {
+      width: 220px;
+      flex-shrink: 0;
+      border-radius: var(--radius-phone);
+      overflow: hidden;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      box-shadow: 0 32px 80px rgba(0,0,0,0.70), 0 0 0 1px rgba(0,0,0,0.5);
+      background: #1a1020;
+      position: relative;
+    }
+    .phone.tall { transform: translateY(-24px); }
+    .phone img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    /* Placeholder for when no screenshot is provided */
+    .phone-placeholder {
+      width: 100%;
+      aspect-ratio: 9/19.5;
+      background: linear-gradient(160deg, #1e1530 0%, #0e0b18 60%, #1a1020 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.2);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+    }
+    .phone-placeholder svg { opacity: 0.25; width: 28px; height: 28px; }
+
+    /* ─── Divider ────────────────────────────────────── */
+    .divider {
+      position: relative;
+      z-index: 1;
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--border), transparent);
+      margin: 0 auto 80px;
+    }
+
+    /* ─── Features ───────────────────────────────────── */
+    .features {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px 120px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 26px;
+      transition: border-color 0.2s;
+    }
+    .feature-card:hover { border-color: rgba(232,149,107,0.25); }
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--amber-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 18px;
+    }
+    .feature-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .feature-body {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ─── Privacy callout ────────────────────────────── */
+    .privacy {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      margin: 0 auto 120px;
+      padding: 0 24px;
+      text-align: center;
+    }
+    .privacy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+    }
+    .privacy h2 {
+      font-size: clamp(24px, 4vw, 34px);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .privacy p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ─── Footer CTA ─────────────────────────────────── */
+    .footer-cta {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 80px 24px 100px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-cta h2 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+      line-height: 1.15;
+    }
+    .footer-cta p {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+    .footer-note {
+      margin-top: 60px;
+      font-size: 12px;
+      color: var(--faint);
+      letter-spacing: 0.04em;
+    }
+    .footer-note a {
+      color: var(--faint);
+      text-decoration: none;
+    }
+    .footer-note a:hover { color: var(--muted); }
+
+    /* ─── Responsive ─────────────────────────────────── */
+    @media (max-width: 600px) {
+      nav { padding: 16px 20px; }
+      .phones { gap: 12px; }
+      .phone { width: 155px; border-radius: 32px; }
+      .phone.tall { transform: translateY(-16px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a class="nav-logo" href="#">WITH LOVE</a>
+    <a class="btn-nav" href="https://testflight.apple.com/join/REPLACE_WITH_YOUR_LINK">Join TestFlight</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-eyebrow">Now in Beta</p>
+    <h1 class="hero-title">Say what you<br>still need to say.</h1>
+    <p class="hero-sub">
+      With Love is a quiet space to write to the people you've lost —
+      not to save the words, just to send them.
+    </p>
+    <a class="btn-primary" href="https://testflight.apple.com/join/REPLACE_WITH_YOUR_LINK">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+      Join TestFlight
+    </a>
+    <p class="hero-note">Free iOS beta · No account needed</p>
+  </section>
+
+  <!-- Phone mockups -->
+  <div class="phones">
+    <div class="phone">
+      <img src="screenshots/screen1.jpg" alt="With Love — home screen with sunset sky" />
+    </div>
+    <div class="phone tall">
+      <img src="screenshots/screen2.jpg" alt="With Love — paint to reveal a photo" />
+    </div>
+    <div class="phone">
+      <img src="screenshots/screen3.jpg" alt="With Love — create art mode" />
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-icon">✍️</div>
+      <h3 class="feature-title">Write to someone you've lost</h3>
+      <p class="feature-body">A blank space and a name. No inbox. No reply. Just room to say what's still there.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌅</div>
+      <h3 class="feature-title">Send it into the sky</h3>
+      <p class="feature-body">Your words rise, soften, and dissolve. The act of sending is the point — not the record.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🖌️</div>
+      <h3 class="feature-title">Paint them into view</h3>
+      <p class="feature-body">Load a photo and paint away the sky to reveal it. A quiet, tactile moment of presence.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3 class="feature-title">Nothing is kept</h3>
+      <p class="feature-body">Messages are never stored — not on your phone, not on a server. Only the count of what's been sent.</p>
+    </div>
+  </section>
+
+  <!-- Privacy callout -->
+  <div class="privacy">
+    <div class="privacy-badge">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Private by design
+    </div>
+    <h2>No messages are saved.<br>Not by us. Not anywhere.</h2>
+    <p>With Love exists only as a gesture. You write it, you send it, and it's gone. We only ever keep a count of how many have been sent — never the words themselves.</p>
+  </div>
+
+  <!-- Footer CTA -->
+  <footer class="footer-cta">
+    <h2>Be among the first<br>to try it.</h2>
+    <p>Join the TestFlight beta — free, no strings attached.</p>
+    <a class="btn-primary" href="https://testflight.apple.com/join/REPLACE_WITH_YOUR_LINK">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+        <path d="M12 19V5M5 12l7-7 7 7"/>
+      </svg>
+      Join TestFlight
+    </a>
+    <p class="footer-note">
+      Made with care &nbsp;·&nbsp;
+      <a href="mailto:kbergen@microsoft.com">Contact</a>
+    </p>
+  </footer>
+
+</body>
+</html>
